@@ -62,3 +62,8 @@ typings/
 
 # macOS temporary files
 .DS_Store
+
+# Python virtual environment
+venv
+
+.vscode

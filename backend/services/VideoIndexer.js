@@ -119,15 +119,26 @@ const getAnalysis = async (videoId) => {
 
     const transcriptInsights = await TextAnalytics.handleTranscript(transcript)
 
+    const data = {
+      video: video,
+      transcript: transcriptInsights.transcript,
+      confidence: transcriptInsights.confidence,
+      duration: duration,
+      blocks: transcript.length
+    }
+
+    const flaskOptions = {
+      uri: 'http://localhost:8080/analysis',
+      method: 'POST',
+      body: data,
+      json: true
+    }
+
+    const processedData = await rp.post(flaskOptions)
+
     return {
       error: false,
-      data: {
-        video: video,
-        transcript: transcriptInsights.transcript,
-        confidence: transcriptInsights.confidence,
-        duration: duration,
-        blocks: transcript.length
-      }
+      data: processedData
     }
   } catch (exception) {
     console.error(exception)
