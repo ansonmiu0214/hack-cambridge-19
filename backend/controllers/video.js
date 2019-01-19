@@ -1,6 +1,9 @@
 const fs = require('fs')
 const VideoIndexer = require('../services/VideoIndexer')
 
+const SAMPLE_VIDEO_ID = "7770243107"
+
+
 const postVideo = async (req, res, next) => {
   const videoName = 'interview.mp4'
   const videoFile = fs.createReadStream(videoName)
@@ -12,8 +15,6 @@ const postVideo = async (req, res, next) => {
 }
 
 const queryProgress = async (req, res, next) => {
-  const SAMPLE_VIDEO_ID = "7770243107"
-
   const { error, data } = await VideoIndexer.queryProgress(SAMPLE_VIDEO_ID)
   if (error) return res.status(500).send(data)
 
@@ -21,8 +22,6 @@ const queryProgress = async (req, res, next) => {
 }
 
 const getAnalysis = async (req, res, next) => {
-  const SAMPLE_VIDEO_ID = "7770243107"
-
   const { error, data } = await VideoIndexer.getAnalysis(SAMPLE_VIDEO_ID)
   if (error) return res.status(500).send(data)
 
