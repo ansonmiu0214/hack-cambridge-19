@@ -1,80 +1,38 @@
 const fs = require('fs')
-const rp = require('request-promise')
-
-
-const LOCATION = 'trial'
-const ACCOUNT_ID = 'b9728b99-b18a-4c83-9b52-06ae9fe466d3'
-const SUBSCRIPTION_KEY = 'd116cd55f26040e58f5dfaa0bee74547'
-const DEFAULT_NAME = 'myInterview'
-
-const buildURL = (accessToken) => `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${accessToken}&name=${DEFAULT_NAME}`
-
-const getAccessToken = async () => {
-  const accessTokenOptions = {
-    uri: `https://api.videoindexer.ai/auth/${LOCATION}/Accounts/${ACCOUNT_ID}/AccessToken?allowEdit=true`,
-    headers: {
-      'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY
-    }
-  }
-
-  try {
-    const payload = await rp.get(accessTokenOptions)
-    const accessToken = payload.substring(1, payload.length - 1)
-    return {
-      error: false,
-      message: accessToken
-    }
-
-  } catch (exception) {
-    return {
-      error: true,
-      message: exception
-    }
-  }
-}
+const VideoIndexer = require('../services/VideoIndexer')
 
 const postVideo = async (req, res, next) => {
-  const { error, message }  = await getAccessToken()
-  if (error) {
-    console.error(message)
-    return res.status(500).send(message)
-  }
+  const videoName = 'interview.mp4'
+  const videoFile = fs.createReadStream(videoName)
 
-  console.log(message)
+  const { error, message } = await VideoIndexer.postVideo(videoName, videoFile)
+  if (error) return res.status(400).send(message)
 
-  const uri = buildURL(accessToken = message)
-  console.log(uri)
+  res.send(message)
+}
 
-  const options = {
-    method: 'POST',
-    uri: uri,
-    formData: {
-      file: {
-        value: fs.createReadStream('cars.mp4'),
-        options: {
-          filename: 'cars.mp4',
-          contentType: 'video/mp4'
-        }
-      }
-    },
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  }
+const queryProgress = async (req, res, next) => {
+  const SAMPLE_VIDEO_ID = "7770243107"
 
+  const { error, message } = await VideoIndexer.queryProgress(SAMPLE_VIDEO_ID)
+  if (error) return res.status(500).send(message)
 
-  try {
-    const data = await rp.post(options)
-    console.log(data)
-    res.json(data)
-  } catch (reject) {
-    console.error(reject)
-    res.json(reject)
-  }
+  res.send(message)
+}
+
+const getAnalysis = async (req, res, next) => {
+  const SAMPLE_VIDEO_ID = "7770243107"
+
+  const { error, data } = await VideoIndexer.getAnalysis(SAMPLE_VIDEO_ID)
+  if (error) return res.status(500).send(data)
+
+  res.send(data)
 }
 
 module.exports = {
-  postVideo: postVideo
+  postVideo: postVideo,
+  queryProgress: queryProgress,
+  getAnalysis: getAnalysis
 }
 
 // https://api.videoindexer.ai/{location}/Accounts/{accountId}/Videos?accessToken={accessToken}&name={name}[&description][&partition][&externalId][&callbackUrl][&metadata][&language][&videoUrl][&fileName][&indexingPreset][&streamingPreset][&linguisticModelId][&privacy][&externalUrl][&assetId][&priority][&personModelId][&brandsCategories]
