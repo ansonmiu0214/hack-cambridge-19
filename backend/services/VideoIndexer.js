@@ -115,7 +115,7 @@ const getAnalysis = async (videoId) => {
     const [video] = videos.filter(({ id }) => id === videoId)
 
     const { insights } = video
-    const { transcript, sentiments } = insights
+    const { transcript, sentiments, duration } = insights
 
     const transcriptInsights = await TextAnalytics.handleTranscript(transcript)
 
@@ -123,7 +123,10 @@ const getAnalysis = async (videoId) => {
       error: false,
       data: {
         video: video,
-        transcript: transcriptInsights.transcript
+        transcript: transcriptInsights.transcript,
+        confidence: transcriptInsights.confidence,
+        duration: duration,
+        blocks: transcript.length
       }
     }
   } catch (exception) {
