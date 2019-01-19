@@ -36,11 +36,18 @@ const getQuestion = async(req, res, next) => {
   res.send(data)
 }
 
+const getResponse  = async(req, res, next) => {
+  const QUESTION_ID ="1"
+  const data =await Database.getInstance().getResponse(QUESTION_ID)
+  res.send(data)
+}
+
 module.exports = {
   postVideo: postVideo,
   queryProgress: queryProgress,
   getAnalysis: getAnalysis,
-  getQuestion: getQuestion
+  getQuestion: getQuestion,
+  getResponse: getResponse
 }
 
 // https://api.videoindexer.ai/{location}/Accounts/{accountId}/Videos?accessToken={accessToken}&name={name}[&description][&partition][&externalId][&callbackUrl][&metadata][&language][&videoUrl][&fileName][&indexingPreset][&streamingPreset][&linguisticModelId][&privacy][&externalUrl][&assetId][&priority][&personModelId][&brandsCategories]

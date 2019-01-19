@@ -29,10 +29,9 @@ class Database {
   }
   async getResponse(id) {
     try{
-       return await tp.sql(`SELECT keywords, frequency FROM Responses WHERE QuestionId = ${id}`).execute()
-  }
-  catch (e) {
-    console.log(e);   // uncaught
+      return await tp.sql(`SELECT keywords, frequency FROM Responses WHERE QuestionId = ${id}`).execute()
+    }catch (e) {
+      console.log(e);   // uncaught
 }}
 }
 

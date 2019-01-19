@@ -1,7 +1,7 @@
 const express = require('express')
 
 // Merged controllers with routes to save time at the moment
-const { postVideo, queryProgress, getAnalysis, getQuestion } = require('./controllers/video')
+const { postVideo, queryProgress, getAnalysis, getQuestion, getResponse } = require('./controllers/video')
 
 const PORT = process.env.PORT || 5000
 const app = express()
@@ -18,5 +18,6 @@ app.get('/post', postVideo)
 app.get('/query', queryProgress)
 app.get('/analysis', getAnalysis) 
 app.get('/getQuestion', getQuestion)
+app.get('/getResponse', getResponse)
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
