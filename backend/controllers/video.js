@@ -1,5 +1,6 @@
 const fs = require('fs')
 const VideoIndexer = require('../services/VideoIndexer')
+const Database = require('../services/database')
 
 const postVideo = async (req, res, next) => {
   const videoName = 'interview.mp4'
@@ -29,10 +30,17 @@ const getAnalysis = async (req, res, next) => {
   res.send(data)
 }
 
+const getQuestion = async(req, res, next) => {
+  const data =await Database.getInstance().getQuestion()
+  console.log(data)
+  res.send(data)
+}
+
 module.exports = {
   postVideo: postVideo,
   queryProgress: queryProgress,
-  getAnalysis: getAnalysis
+  getAnalysis: getAnalysis,
+  getQuestion: getQuestion
 }
 
 // https://api.videoindexer.ai/{location}/Accounts/{accountId}/Videos?accessToken={accessToken}&name={name}[&description][&partition][&externalId][&callbackUrl][&metadata][&language][&videoUrl][&fileName][&indexingPreset][&streamingPreset][&linguisticModelId][&privacy][&externalUrl][&assetId][&priority][&personModelId][&brandsCategories]
