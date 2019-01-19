@@ -25,22 +25,22 @@ const getAccessToken = async () => {
     const accessToken = payload.substring(1, payload.length - 1)
     return {
       error: false,
-      message: accessToken
+      data: accessToken
     }
   } catch (exception) {
     return {
       error: true,
-      message: exception
+      data: exception
     }
   }
 }
 
 const postVideo = async (videoName, videoFile) => {
   const payload = await getAccessToken()
-  const { error, message } = payload
+  const { error, data } = payload
   if (error) return payload
 
-  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${message}&name=${DEFAULT_NAME}`
+  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${data}&name=${DEFAULT_NAME}`
 
   const options = {
     method: 'POST',
@@ -63,23 +63,23 @@ const postVideo = async (videoName, videoFile) => {
     const { thumbnailVideoId } = await rp.post(options)
     return {
       error: false,
-      message: thumbnailVideoId
+      data: thumbnailVideoId
     }
   } catch (exception) {
     console.error(exception)
     return {
       error: true,
-      message: exception
+      data: exception
     }
   }
 }
 
 const queryProgress = async (videoId) => {
   const payload = await getAccessToken()
-  const { error, message } = payload
+  const { error, data } = payload
   if (error) return payload
 
-  const url = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos/${videoId}/Index?accessToken=${message}`
+  const url = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos/${videoId}/Index?accessToken=${data}`
 
   try {
     const { state } = await rp.get({
@@ -89,23 +89,23 @@ const queryProgress = async (videoId) => {
 
     return {
       error: false,
-      message: state
+      data: state
     }
   } catch (exception) {
     console.error(exception)
     return {
       error: true,
-      message: exception
+      data: exception
     }
   }
 }
 
 const getAnalysis = async (videoId) => {
   const payload = await getAccessToken()
-  const { error, message } = payload
+  const { error, data } = payload
   if (error) return payload
 
-  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos/${videoId}/Index?accessToken=${message}`
+  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos/${videoId}/Index?accessToken=${data}`
 
   try {
     const { videos } = await rp.get({
@@ -122,7 +122,8 @@ const getAnalysis = async (videoId) => {
     return {
       error: false,
       data: {
-        video: video
+        video: video,
+        transcript: transcriptInsights.transcript
       }
     }
   } catch (exception) {

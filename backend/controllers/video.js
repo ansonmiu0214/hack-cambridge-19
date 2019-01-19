@@ -5,19 +5,19 @@ const postVideo = async (req, res, next) => {
   const videoName = 'interview.mp4'
   const videoFile = fs.createReadStream(videoName)
 
-  const { error, message } = await VideoIndexer.postVideo(videoName, videoFile)
-  if (error) return res.status(400).send(message)
+  const { error, data } = await VideoIndexer.postVideo(videoName, videoFile)
+  if (error) return res.status(400).send(data)
 
-  res.send(message)
+  res.send(data)
 }
 
 const queryProgress = async (req, res, next) => {
   const SAMPLE_VIDEO_ID = "7770243107"
 
-  const { error, message } = await VideoIndexer.queryProgress(SAMPLE_VIDEO_ID)
-  if (error) return res.status(500).send(message)
+  const { error, data } = await VideoIndexer.queryProgress(SAMPLE_VIDEO_ID)
+  if (error) return res.status(500).send(data)
 
-  res.send(message)
+  res.send(data)
 }
 
 const getAnalysis = async (req, res, next) => {
