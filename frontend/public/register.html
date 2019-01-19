@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" href="App.css">
+	<title>Title of the document</title>
+</head>
+
+<body class="register-pg">
+	<div>
+		<h1 class="register-title">Register</h1>
+		<div class="register-form">
+			<form>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Email address</label>
+					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email"/>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Confirm Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm Password"/>
+				</div>
+
+				<label for="exampleInputPassword1" style="margin-right: 90px;">Education Level</label>
+
+				<div class="dropdown">
+				  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;">
+				    <span id="option1">---Please Select---</span>
+				  </button>
+				  <div class="dropdown-menu dropdown-menu1" aria-labelledby="dropdownMenuButton1">
+						<a class="dropdown-item" href="#">GCSE</a>
+						<a class="dropdown-item" href="#">A Level</a>
+						<a class="dropdown-item" href="#">Bachelor's Degree</a>
+						<a class="dropdown-item" href="#">Master's Degree</a>
+						<a class="dropdown-item" href="#">PhD</a>
+				  </div>
+				</div>
+				<div class="vs2"></div>
+				<label for="exampleInputPassword1">Experience Level</label>
+					<div class="dropdown">
+						<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span id="option2">---Please Select---</span>
+						</button>
+						<div class="dropdown-menu dropdown-menu2" aria-labelledby="dropdownMenuButton2">
+							<a class="dropdown-item" href="#">Internship</a>
+							<a class="dropdown-item" href="#">Entry Level</a>
+							<a class="dropdown-item" href="#">Associate</a>
+							<a class="dropdown-item" href="#">Mid-Senior Level</a>
+							<a class="dropdown-item" href="#">Director</a>
+							<a class="dropdown-item" href="#">Executive</a>
+						</div>
+					</div>
+
+					<label for="exampleInputPassword1" class='career-field'>Career Field</label>
+					<div class="dropdown">
+						<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;">
+							<span id="option3">---Please Select---</span>
+						</button>
+						<div class="dropdown-menu dropdown-menu3" aria-labelledby="dropdownMenuButton1">
+							<a class="dropdown-item" href="#">Agriculture, Food and Natural Resources</a>
+							<a class="dropdown-item" href="#">Architecture and Construction</a>
+							<a class="dropdown-item" href="#">Arts, Audio/Video Technology and Communications</a>
+							<a class="dropdown-item" href="#">Business Management and Administration</a>
+							<a class="dropdown-item" href="#">Education and Training</a>
+							<a class="dropdown-item" href="#">Finance</a>
+							<a class="dropdown-item" href="#">Government and Public Administration</a>
+							<a class="dropdown-item" href="#">Health Science</a>
+							<a class="dropdown-item" href="#">Hospitality and Tourism</a>
+							<a class="dropdown-item" href="#">Human Services</a>
+							<a class="dropdown-item" href="#">Information Technology</a>
+							<a class="dropdown-item" href="#">Law, Public Safety, Corrections and Security</a>
+							<a class="dropdown-item" href="#">Manufacturing</a>
+							<a class="dropdown-item" href="#">Marketing, Sales and Service</a>
+							<a class="dropdown-item" href="#">Science, Technology, Engineering and Mathematics</a>
+							<a class="dropdown-item" href="#">Transportation, Distribution and Logistics</a>
+						</div>
+					</div>
+
+					<div class="vs5"></div>
+
+				<a class="btn btn-light back-btn" href="login.html" role="button">Back</a>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+
+	</div>
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script>
+$('.dropdown-menu1 a').click(function(e){
+	e.preventDefault()
+    $('#option1').text($(this).text());
+  });
+
+	$('.dropdown-menu2 a').click(function(){
+	    $('#option2').text($(this).text());
+	  });
+
+		$('.dropdown-menu3 a').click(function(){
+		    $('#option3').text($(this).text());
+		  });
+	</script>
+
+</html>
