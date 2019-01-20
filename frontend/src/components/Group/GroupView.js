@@ -3,6 +3,9 @@ import { Typography, Grid, Button } from '@material-ui/core';
 
 import io from 'socket.io-client'
 
+const PROD = false
+const WS_URL = PROD ? 'http://104.42.50.12:5050' : 'http://localhost:5050'
+
 const servers = { 'iceServers': [{ 'urls': 'stun:stun.services.mozilla.com' }, { 'urls': 'stun:stun.l.google.com:19302' }, { 'urls': 'turn:numb.viagenie.ca', 'credential': 'webrtc', 'username': 'websitebeaver@mail.com' }] };
 const pc = new RTCPeerConnection(servers);
 
@@ -37,7 +40,7 @@ class GroupView extends Component {
         })
     }
 
-    const socket = io('http://localhost:5050', { autoConnect: true })
+    const socket = io(WS_URL, { autoConnect: true })
 
 
     socket.on('child_added', data => this.readMessage(this, data))
