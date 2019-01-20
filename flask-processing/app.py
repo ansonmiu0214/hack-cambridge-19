@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify
+import json
 import re
 import sys
 import datetime, time
 import nltk
 from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from collections import Counter
 from math import log10, floor
 
@@ -27,7 +29,7 @@ def process(data):
   print ("Number of pauses detected:", blocksNo)
 
   darrenking = open("darren-king.txt", "r").read()
-  onlyLettersRegex = re.compile('[^a-zA-Z\s]')
+  onlyLettersRegex = re.compile('[^a-zA-Z\s\']')
   darrenking = onlyLettersRegex.sub('', darrenking).lower()
   transcript = onlyLettersRegex.sub('', transcript).lower()
   #accuracyError = abs(len(transcript.split()) - len(darrenking.split()))
@@ -116,12 +118,43 @@ def process(data):
       longDelay = True
 
    #7. Other interviewee also used the word ...
-  json1 = open("train_data/56742031a6.json", "r").read()
-  json2 = open("train_data/36174b019c.json", "r").read()
-  json3 = open("train_data/be9cea6eed.json", "r").read()
+  stopWords = {'ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about', 'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be', 'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself', 'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the', 'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through', 'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should', 'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all', 'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in', 'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over', 'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has', 'just', 'where', 'too', 'only', 'myself', 'which', 'those', 'i', 'after', 'few', 'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing', 'it', 'how', 'further', 'was', 'here', 'than'}
+  text1 = open("train_data/56742031a6.json", "r").read()
+  text2 = open("train_data/36174b019c.json", "r").read()
+  text3 = open("train_data/be9cea6eed.json", "r").read()
 
-  #json1_transcript = json1['']
-  print (json1)
+  text1 = onlyLettersRegex.sub('', text1).lower().split()
+  text1 = list(set(text1) - stopWords)
+  text2 = onlyLettersRegex.sub('', text2).lower().split()
+  text2 = list(set(text2) - stopWords)
+  text3 = onlyLettersRegex.sub('', text3).lower().split()
+  text3 = list(set(text3) - stopWords)
+  transcript_list = list(set(transcript.lower().split()) - stopWords)
+
+  exist_data_combined = (text1) + (text2) + (text3)
+  counts = {}
+  firstWord = ""
+  secondWord = ""
+  thirdWord = ""
+  for t in exist_data_combined:
+      if t in transcript_list:
+          counts[t] = exist_data_combined.count(t)
+
+  sorted_dict = sorted(counts, key=counts.get, reverse=True)
+
+  if (len(sorted_dict) == 1):
+      firstWord = sorted_dict[0]
+  elif (len(sorted_dict) == 2):
+      firstWord = sorted_dict[0]
+      secondWord = sorted_dict[1]
+  elif (len(sorted_dict) >= 3):
+      firstWord = sorted_dict[0]
+      secondWord = sorted_dict[1]
+      thirdWord = sorted_dict[2]
+
+  print (firstWord)
+  print (secondWord)
+  print (thirdWord)
 
 
   data = {"clarity_score":clarityScore, #numeric
@@ -131,7 +164,11 @@ def process(data):
         "speak_too_slow":speakTooSlow, #boolean
         "speak_too_fast":speakTooFast, #boolean
         "time_delay": timeDelay, #numeric
-        "long_delay":longDelay} #boolean
+        "long_delay":longDelay, #boolean
+        "first_word":firstWord, #string - word that matches most with others
+        "second_word":secondWord, #string - word that matches 2nd most with others
+        "third_word": thirdWord} #string - word that matches 3rd most with others
+
 
   return data
 
