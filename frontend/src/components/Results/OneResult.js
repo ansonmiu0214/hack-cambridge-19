@@ -3,7 +3,7 @@ import { Typography,Grid,Card,CardContent, withStyles, Paper, Divider } from '@m
 import axios from 'axios'
 import Loader from '../Loader';
 
-const PROD = false
+const PROD = true
 if (PROD) axios.defaults.baseURL = 'http://104.42.50.12'
 
 const styles = {
