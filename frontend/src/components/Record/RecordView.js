@@ -5,6 +5,9 @@ import RecordRTC from 'recordrtc';
 
 const TIME_MILLIS = 2 * 60 * 1000
 
+const PROD = false
+if (PROD) axios.defaults.baseURL = 'http://104.42.50.12'
+
 class RecordView extends Component {
 
   constructor(props) {
