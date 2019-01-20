@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import axios from 'axios';
 import RecordRTC from 'recordrtc';
 
-const TIME_MILLIS = 5000
+const TIME_MILLIS = 2 * 60 * 1000
 
 class RecordView extends Component {
 
   constructor(props) {
     super(props)
+    this.invokeSaveAsDialog = this.invokeSaveAsDialog.bind(this)
   }
   
   state = {
     videoSupport: true,
-    questionTitle: null
+    questionTitle: null,
+    recorder: undefined
   }
   
   componentDidMount() {
@@ -28,6 +30,8 @@ class RecordView extends Component {
             let recorder = RecordRTC(stream, {
               type: 'video'
           });
+
+          that.setState({ recorder })
           // video.play()
           recorder.startRecording();
 
@@ -46,13 +50,13 @@ class RecordView extends Component {
       var rand = data[Math.floor(Math.random() * data.length)];
       console.log(rand.Questions)
       that.setState({ questionTitle: rand.Questions})
+      var time = TIME_MILLIS / 1000 ,
+      display = document.querySelector('#time');
+      that.startTimer(time, display);
       // parseResponse(data);
     }).catch(function(e){
       console.log(e)});
       
-    var time = 2*60 ,
-    display = document.querySelector('#time');
-    this.startTimer(time, display);
   }
 
   startTimer(duration, display) {
@@ -71,6 +75,12 @@ class RecordView extends Component {
             
         }
     }, 1000);
+  }
+
+  stopRecording() {
+    const recorder = this.state.recorder
+    const that = this
+    recorder.stopRecording(() => that.invokeSaveAsDialog(recorder.getBlob()))
   }
 
   invokeSaveAsDialog(file, fileName) {
@@ -131,19 +141,17 @@ class RecordView extends Component {
          <Typography variant="h4"> Time Left: <span id="time">
          </span></Typography>
         
-       
-
         {
           videoSupport 
             ?
             <Grid item xs={12} sm={6}>
-              <video id="video" width="640" height="480" autoPlay></video>
+              <video id="video" width="720" height="540" autoPlay></video>
             </Grid>
             :
             <Typography variant="h5">Video Blocked By Browser</Typography>
         }
          <div id="webcamcontrols">
-          <button class="recordbutton" >RECORD</button>
+          <Button color="primary" variant="contained"  onClick={e => this.stopRecording()}>STOP</Button>
         </div>
         </Grid>
       </Grid>

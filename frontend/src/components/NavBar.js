@@ -22,7 +22,7 @@ const styles = {
 };
 
 function NavBar(props) {
-  const { classes, groupBtn } = props;
+  const { classes, groupBtn, lastSubmitted, homeHandler } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -33,9 +33,8 @@ function NavBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Interview 101
           </Typography>
-          <Button size="large" color="inherit">Start</Button>
-          <Button size="large" color="inherit">Reviews</Button>
-          <Button size="large" color="inherit">Compare</Button>
+          <Button size="large" color="inherit" onClick={homeHandler}>Start</Button>
+          <Button size="large" color="inherit" onClick={lastSubmitted} >Last Submitted</Button>
           <Button size="large" color="inherit" onClick={groupBtn}>Group</Button>
         </Toolbar>
       </AppBar>

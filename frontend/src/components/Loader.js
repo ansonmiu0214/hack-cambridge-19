@@ -15,14 +15,16 @@ class Loader extends Component {
   }
 
   render() {
-    // const { text } = this.props
+    let { text } = this.props
+
+    if (text === undefined) text = "Loading..."
     return (
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div><CircularProgress color="secondary" className={this.classes.progress}/></div>
         {
           <div>
             <Typography color="textSecondary" variant="h5">
-              Loading...
+              {text}
             </Typography>
           </div>
         }

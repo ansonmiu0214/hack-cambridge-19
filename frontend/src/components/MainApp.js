@@ -14,8 +14,10 @@ class MainApp extends Component {
   constructor(props) {
     super(props)
     this.startNextHandler = this.startNextHandler.bind(this)
+    this.homeHandler = this.homeHandler.bind(this)
     this.groupBtn = this.groupBtn.bind(this)
     this.handleVideo = this.handleVideo.bind(this)
+    this.lastSubmitted = this.lastSubmitted.bind(this)
   }
 
   state = {
@@ -24,9 +26,13 @@ class MainApp extends Component {
     videoId: undefined
   }
 
+  homeHandler = () => this.setState({ stage: 1 })
+
   startNextHandler = () => this.setState({ stage: 2 })
 
   groupBtn = () => this.setState({ stage: 4 })
+
+  lastSubmitted = () => this.setState({ stage: 3, loading: false, videoId: 'eb5d366dde'})
 
   handleVideo = (file, fileName) => {
     this.setState({ loading: true })
@@ -51,7 +57,7 @@ class MainApp extends Component {
     const { stage, loading, videoId } = this.state
     return (
       <>
-      <NavBar groupBtn={this.groupBtn} />
+      <NavBar groupBtn={this.groupBtn} lastSubmitted={this.lastSubmitted} homeHandler={this.homeHandler} />
       <Grid style={{marginTop: '30px'}} container justify='center'>
         <Grid item xs={10}>
           { loading && <Loader />}
