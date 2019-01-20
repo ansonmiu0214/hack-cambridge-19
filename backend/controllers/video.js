@@ -23,12 +23,8 @@ const queryProgress = async (req, res, next) => {
 }
 
 const getAnalysis = async (req, res, next) => {
-<<<<<<< HEAD
   //const SAMPLE_VIDEO_ID = "7770243107"
   const SAMPLE_VIDEO_ID = "56742031a6"
-
-=======
->>>>>>> f8a3be61c80a4bcb82834ab0169e20f9d50c53a0
   const { error, data } = await VideoIndexer.getAnalysis(SAMPLE_VIDEO_ID)
   if (error) return res.status(500).send(data)
 
