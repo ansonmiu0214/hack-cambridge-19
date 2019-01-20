@@ -136,6 +136,8 @@ const getAnalysis = async (videoId) => {
       blocks: transcript.length
     }
 
+    console.log(data)
+
     const flaskOptions = {
       uri: 'http://localhost:8080/analysis',
       method: 'POST',
@@ -143,8 +145,8 @@ const getAnalysis = async (videoId) => {
       json: true
     }
 
-    // const processedData = await rp.post(flaskOptions)
-    const processedData = data
+    const processedData = await rp.post(flaskOptions)
+    // const processedData = data
 
     return {
       error: false,
