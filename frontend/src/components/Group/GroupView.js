@@ -3,7 +3,7 @@ import { Typography, Grid, Button } from '@material-ui/core';
 
 import io from 'socket.io-client'
 
-const PROD = false
+const PROD = true
 const WS_URL = PROD ? 'http://104.42.50.12:5050' : 'http://localhost:5050'
 
 const servers = { 'iceServers': [{ 'urls': 'stun:stun.services.mozilla.com' }, { 'urls': 'stun:stun.l.google.com:19302' }, { 'urls': 'turn:numb.viagenie.ca', 'credential': 'webrtc', 'username': 'websitebeaver@mail.com' }] };
