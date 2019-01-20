@@ -120,7 +120,7 @@ const getAnalysis = async (videoId) => {
     })
     const [video] = videos.filter(({ id }) => id === videoId)
     console.log(video)
-    
+
     const { insights } = video
     let { transcript, sentiments, duration } = insights
 
@@ -143,7 +143,8 @@ const getAnalysis = async (videoId) => {
       json: true
     }
 
-    const processedData = await rp.post(flaskOptions)
+    // const processedData = await rp.post(flaskOptions)
+    const processedData = data
 
     return {
       error: false,

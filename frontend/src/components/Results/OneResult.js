@@ -1,7 +1,43 @@
 import React, { Component } from 'react';
-import { Typography,Grid,Card } from '@material-ui/core';
+import { Typography,Grid,Card,CardContent, withStyles } from '@material-ui/core';
 import axios from 'axios'
 import Loader from '../Loader';
+
+const styles = {
+  card: {
+    minWidth: 275,
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+};
+
+function DataCard(props) {
+  const { title, text, classes } = props
+
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+          {title}
+        </Typography>
+        <Typography variant="h5" component="h2">
+          {text}
+        </Typography>
+      </CardContent>
+    </Card>
+  )
+}
+
+const StyledCard = withStyles(styles)(DataCard)
 
 class OneResult extends Component {
   state = { 
@@ -64,46 +100,59 @@ class OneResult extends Component {
          <Typography variant="h3">Insights</Typography>
          
          <br/>
-         <Card>
+         <StyledCard title="Clarity Score" text="3" />
+         {/* <Card>
          <Typography variant="h5">Clarity Score</Typography>
          <Typography variant="h5">3</Typography>
-          </Card>
+          </Card> */}
           <br/>
-         <Card>
+          <StyledCard title="Sentiment Score" text="3" />
+         {/* <Card>
           <Typography variant="h5">Sentiment Score</Typography>
-         <Typography variant="h5">3</Typography>
+         <Typography variant="h5">3</Typography> */}
          
          <br/>
-         <Card>
+         <StyledCard title="Improvement to Sentiment" text="3" />
+         {/* <Card>
          <Typography variant="h5">Improvement on Sentiment</Typography>
          <Typography variant="h5">3</Typography>
-         </Card>
+         </Card> */}
          <br/>
 
-         <Card>
+         <StyledCard title="Average speed" text="4" />
+
+         {/* <Card>
          <Typography variant="h5">Average speed</Typography>
-         <Typography variant="h5">4</Typography>
+         <Typography variant="h5">4</Typography> */}
          <br/>
-         <Typography variant="h5">Speaking too fast</Typography>
-         <Typography variant="h5">T</Typography>
+
+         <StyledCard title="Speaking too fast" text="T" />
+         {/* <Typography variant="h5">Speaking too fast</Typography>
+         <Typography variant="h5">T</Typography> */}
          <br/>
-         <Typography variant="h5">Speaking too slow</Typography>
+
+         <StyledCard title="Speaking too slow" text="T" />
+         {/* <Typography variant="h5">Speaking too slow</Typography>
          <Typography variant="h5">F</Typography>
-         </Card>
+         </Card> */}
          <br/>
-         <Card>
+         
+         <StyledCard title="Total delay time" text="T" />
+         {/* <Card>
          <Typography variant="h5">Total Delay time</Typography>
-         <Typography variant="h5">3</Typography>
-         <Typography variant="h5">Delay Time Longer Than Average</Typography>
-         <Typography variant="h5">T</Typography>
-         </Card>
+         <Typography variant="h5">3</Typography> */}
+
+         <StyledCard title="Delay Time Longer Than Average" text="T" />
+         {/* <Typography variant="h5">Delay Time Longer Than Average</Typography>
+         <Typography variant="h5">T</Typography> */}
+         {/* </Card> */}
          <br/>
+
+         <StyledCard title="Top three most used words" text="Superised, HELOO, ?_?" />
          <Typography variant="h5">Top three most used words</Typography>
          <Typography variant="h5">Surprised, HELOO, ?_?</Typography>
-         </Card>
+         {/* </Card> */}
         </Grid>
-
-
          
          </Grid>
 

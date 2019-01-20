@@ -38,7 +38,7 @@ const getAnalysis = async (req, res, next) => {
   //const SAMPLE_VIDEO_ID = "36174b019c" //sharen2 - why work in this companny
   // const SAMPLE_VIDEO_ID = "be9cea6eed" //mary - why work in this companny
 
-  const { error, data } = await VideoIndexer.getAnalysis(videoId)
+  // const { error, data } = await VideoIndexer.getAnalysis(videoId)
   if (error) return res.status(500).send(data)
 
   res.send(data)
