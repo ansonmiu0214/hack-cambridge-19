@@ -26,7 +26,7 @@ class RecordView extends Component {
     const video = document.getElementById('video')
     console.log(video)
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         .then(async function (stream) {
           try {
             video.srcObject = stream
