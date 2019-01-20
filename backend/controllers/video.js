@@ -23,8 +23,12 @@ const queryProgress = async (req, res, next) => {
 }
 
 const getAnalysis = async (req, res, next) => {
-  //const SAMPLE_VIDEO_ID = "7770243107"
-  const SAMPLE_VIDEO_ID = "56742031a6"
+  //const SAMPLE_VIDEO_ID = "7770243107" //darren1 - talk about yourself
+  //const SAMPLE_VIDEO_ID = "7f77f7157d" //darren2 - talk about yourself
+  //const SAMPLE_VIDEO_ID = "56742031a6" // sharen1 - why work in this companny
+  //const SAMPLE_VIDEO_ID = "36174b019c" //sharen2 - why work in this companny
+  const SAMPLE_VIDEO_ID = "be9cea6eed" //mary - why work in this companny
+
   const { error, data } = await VideoIndexer.getAnalysis(SAMPLE_VIDEO_ID)
   if (error) return res.status(500).send(data)
 
