@@ -42,7 +42,7 @@ const postVideo = async (videoName, videoFile) => {
   if (error) return payload
 
   console.log('Retrieved access token.')
-  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${data}&name=${DEFAULT_NAME}`
+  const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${data}&name=${videoName}`
 
   const options = {
     method: 'POST',
@@ -56,13 +56,17 @@ const postVideo = async (videoName, videoFile) => {
         }
       }
     },
+    json: true,
     headers: {
       'content-type': 'multipart/form-data'
     }
   }
 
   try {
-    const { thumbnailVideoId } = await rp.post(options)
+    const payload = await rp.post(options)
+    console.log(payload)
+
+    const { thumbnailVideoId } = payload
     return {
       error: false,
       data: thumbnailVideoId
@@ -115,9 +119,12 @@ const getAnalysis = async (videoId) => {
       json: true
     })
     const [video] = videos.filter(({ id }) => id === videoId)
-
+    console.log(video)
+    
     const { insights } = video
-    const { transcript, sentiments, duration } = insights
+    let { transcript, sentiments, duration } = insights
+
+    if (transcript === undefined) transcript = []
 
     const transcriptInsights = await TextAnalytics.handleTranscript(transcript)
 

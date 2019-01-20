@@ -1,13 +1,16 @@
 const fs = require('fs')
+
 const VideoIndexer = require('../services/VideoIndexer')
 const Database = require('../services/database')
 
 const SAMPLE_VIDEO_ID = "7770243107"
 
-
 const postVideo = async (req, res, next) => {
-  const videoName = 'mary.mp4'
-  const videoFile = fs.createReadStream(videoName)
+  const videoName = 'interview'
+  // const videoFile = fs.createReadStream(videoName)
+
+  const videoFile = fs.createReadStream(req.file.path)
+  // console.log(videoFile)
 
   const { error, data } = await VideoIndexer.postVideo(videoName, videoFile)
   console.log(data)
@@ -17,7 +20,8 @@ const postVideo = async (req, res, next) => {
 }
 
 const queryProgress = async (req, res, next) => {
-  const { error, data } = await VideoIndexer.queryProgress(SAMPLE_VIDEO_ID)
+  const { videoId } = req.query
+  const { error, data } = await VideoIndexer.queryProgress(videoId)
   if (error) return res.status(500).send(data)
 
   res.send(data)
@@ -25,8 +29,9 @@ const queryProgress = async (req, res, next) => {
 
 const getAnalysis = async (req, res, next) => {
   //const SAMPLE_VIDEO_ID = "7770243107"
-  const SAMPLE_VIDEO_ID = "56742031a6"
-  const { error, data } = await VideoIndexer.getAnalysis(SAMPLE_VIDEO_ID)
+  // const SAMPLE_VIDEO_ID = "56742031a6"
+  const { videoId } = req.query
+  const { error, data } = await VideoIndexer.getAnalysis(videoId)
   if (error) return res.status(500).send(data)
 
   res.send(data)
