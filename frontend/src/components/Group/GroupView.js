@@ -55,7 +55,10 @@ class GroupView extends Component {
     const friendsVideo = document.getElementById('you')
 
     pc.onicecandidate = (event => event.candidate ? this.sendMessage(null, ({ 'ice': event.candidate })) : console.log("Sent All Ice"));
-    pc.onaddstream = (event => friendsVideo.srcObject = event.stream);
+    pc.onaddstream = (event => {
+      alert('adding friend stream!')
+      friendsVideo.srcObject = event.stream
+    });
   }
 
   sendMessage(senderId = null, data) {
