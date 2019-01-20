@@ -31,7 +31,7 @@ const getAnalysis = async (req, res, next) => {
 
 const getQuestion = async(req, res, next) => {
   const data =await Database.getInstance().getQuestion()
-  console.log(data)
+//  console.log(data)
   res.send(data)
 }
 
