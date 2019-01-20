@@ -3,7 +3,7 @@ import { Typography, Grid, Button } from '@material-ui/core';
 
 import io from 'socket.io-client'
 
-const PROD = false
+const PROD = true
 const WS_URL = PROD ? 'http://104.42.50.12:5050' : 'http://localhost:5050'
 
 const servers = { 'iceServers': [{ 'urls': 'stun:stun.services.mozilla.com' }, { 'urls': 'stun:stun.l.google.com:19302' }, { 'urls': 'turn:numb.viagenie.ca', 'credential': 'webrtc', 'username': 'websitebeaver@mail.com' }] };
@@ -41,14 +41,13 @@ class GroupView extends Component {
     }
 
     const socket = io(WS_URL, { autoConnect: true })
-
+    this.initSockets()
 
     socket.on('child_added', data => this.readMessage(this, data))
     socket.on('ack', ({ id } )=> {
       this.setState({ socket: socket, id: id })
     })
     
-    this.initSockets()
   }
 
   initSockets() {
@@ -56,6 +55,7 @@ class GroupView extends Component {
 
     pc.onicecandidate = (event => event.candidate ? this.sendMessage(null, ({ 'ice': event.candidate })) : console.log("Sent All Ice"));
     pc.onaddstream = (event => {
+      console.log(event)
       alert('adding friend stream!')
       friendsVideo.srcObject = event.stream
     });
