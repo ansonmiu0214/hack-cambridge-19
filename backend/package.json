@@ -14,6 +14,7 @@
     "express": "^4.16.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "socket.io": "^2.2.0",
     "tedious": "^4.1.3",
     "tedious-promises": "^0.4.1"
   },

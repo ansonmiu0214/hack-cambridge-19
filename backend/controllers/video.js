@@ -6,7 +6,7 @@ const SAMPLE_VIDEO_ID = "7770243107"
 
 
 const postVideo = async (req, res, next) => {
-  const videoName = 'interview.mp4'
+  const videoName = 'sharen.mp4'
   const videoFile = fs.createReadStream(videoName)
 
   const { error, data } = await VideoIndexer.postVideo(videoName, videoFile)
