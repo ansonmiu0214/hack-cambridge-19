@@ -3,7 +3,13 @@ import { Grid, Typography } from '@material-ui/core';
 import axios from 'axios';
 import RecordRTC from 'recordrtc';
 
+const TIME_MILLIS = 5000
+
 class RecordView extends Component {
+
+  constructor(props) {
+    super(props)
+  }
   
   state = {
     videoSupport: true,
@@ -11,6 +17,7 @@ class RecordView extends Component {
   }
   
   componentDidMount() {
+    const that = this
     const video = document.getElementById('video')
     console.log(video)
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -25,8 +32,8 @@ class RecordView extends Component {
           recorder.startRecording();
 
           setTimeout(()=> recorder.stopRecording(function() {
-            invokeSaveAsDialog(recorder.getBlob());
-          }),2000);
+            that.invokeSaveAsDialog(recorder.getBlob());
+          }), TIME_MILLIS);
           
         }catch (error) {
           video.src = window.URL.createObjectURL(stream)
@@ -34,8 +41,6 @@ class RecordView extends Component {
     })} else {
       this.setState({ videoSupport: false })
     }
-
-    const that = this
     
     axios.get('/getQuestion').then(function ({ data }){
       var rand = data[Math.floor(Math.random() * data.length)];
@@ -47,7 +52,67 @@ class RecordView extends Component {
       
     var time = 2*60 ,
     display = document.querySelector('#time');
-    startTimer(time, display);
+    this.startTimer(time, display);
+  }
+
+  startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+  
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+  
+        display.textContent = minutes + ":" + seconds;
+  
+        if (--timer < 0) {
+            timer = duration;
+            
+        }
+    }, 1000);
+  }
+
+  invokeSaveAsDialog(file, fileName) {
+    if (!file) {
+        throw 'Blob object is required.';
+    }
+    if (!file.type) {
+        try {
+            file.type = 'video/webm';
+        } catch (e) {}
+    }
+    var fileExtension = (file.type || 'video/mp4').split('/')[1];
+    if (fileName && fileName.indexOf('.') !== -1) {
+        var splitted = fileName.split('.');
+        fileName = splitted[0];
+        fileExtension = splitted[1];
+    }
+    var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
+
+    this.props.handleVideo(file, fileFullName)
+  
+    // if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+    //     return navigator.msSaveOrOpenBlob(file, fileFullName);
+    // } else if (typeof navigator.msSaveBlob !== 'undefined') {
+    //     return navigator.msSaveBlob(file, fileFullName);
+    // }
+    // var hyperlink = document.createElement('a');
+    // hyperlink.href = URL.createObjectURL(file);
+    // hyperlink.download = fileFullName;
+    // hyperlink.style = 'display:none;opacity:0;color:transparent;';
+    // (document.body || document.documentElement).appendChild(hyperlink);
+    // if (typeof hyperlink.click === 'function') {
+    //     hyperlink.click();
+    // } else {
+    //     hyperlink.target = '_blank';
+    //     hyperlink.dispatchEvent(new MouseEvent('click', {
+    //         view: window,
+    //         bubbles: true,
+    //         cancelable: true
+    //     }));
+    // }
+    // URL.revokeObjectURL(hyperlink.href);
   }
 
   
@@ -86,61 +151,64 @@ class RecordView extends Component {
   }
 }
 
-function startTimer(duration, display) {
-  var timer = duration, minutes, seconds;
-  setInterval(function () {
-      minutes = parseInt(timer / 60, 10)
-      seconds = parseInt(timer % 60, 10);
+// function startTimer(duration, display) {
+//   var timer = duration, minutes, seconds;
+//   setInterval(function () {
+//       minutes = parseInt(timer / 60, 10)
+//       seconds = parseInt(timer % 60, 10);
 
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
+//       minutes = minutes < 10 ? "0" + minutes : minutes;
+//       seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      display.textContent = minutes + ":" + seconds;
+//       display.textContent = minutes + ":" + seconds;
 
-      if (--timer < 0) {
-          timer = duration;
+//       if (--timer < 0) {
+//           timer = duration;
           
-      }
-  }, 1000);
-}
+//       }
+//   }, 1000);
+// }
 
-function invokeSaveAsDialog(file, fileName) {
-  if (!file) {
-      throw 'Blob object is required.';
-  }
-  if (!file.type) {
-      try {
-          file.type = 'video/webm';
-      } catch (e) {}
-  }
-  var fileExtension = (file.type || 'video/mp4').split('/')[1];
-  if (fileName && fileName.indexOf('.') !== -1) {
-      var splitted = fileName.split('.');
-      fileName = splitted[0];
-      fileExtension = splitted[1];
-  }
-  var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
-  if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
-      return navigator.msSaveOrOpenBlob(file, fileFullName);
-  } else if (typeof navigator.msSaveBlob !== 'undefined') {
-      return navigator.msSaveBlob(file, fileFullName);
-  }
-  var hyperlink = document.createElement('a');
-  hyperlink.href = URL.createObjectURL(file);
-  hyperlink.download = fileFullName;
-  hyperlink.style = 'display:none;opacity:0;color:transparent;';
-  (document.body || document.documentElement).appendChild(hyperlink);
-  if (typeof hyperlink.click === 'function') {
-      hyperlink.click();
-  } else {
-      hyperlink.target = '_blank';
-      hyperlink.dispatchEvent(new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true
-      }));
-  }
-  URL.revokeObjectURL(hyperlink.href);
-}
+// function invokeSaveAsDialog(file, fileName) {
+//   if (!file) {
+//       throw 'Blob object is required.';
+//   }
+//   if (!file.type) {
+//       try {
+//           file.type = 'video/webm';
+//       } catch (e) {}
+//   }
+//   var fileExtension = (file.type || 'video/mp4').split('/')[1];
+//   if (fileName && fileName.indexOf('.') !== -1) {
+//       var splitted = fileName.split('.');
+//       fileName = splitted[0];
+//       fileExtension = splitted[1];
+//   }
+//   var fileFullName = (fileName || (Math.round(Math.random() * 9999999999) + 888888888)) + '.' + fileExtension;
+
+
+
+//   if (typeof navigator.msSaveOrOpenBlob !== 'undefined') {
+//       return navigator.msSaveOrOpenBlob(file, fileFullName);
+//   } else if (typeof navigator.msSaveBlob !== 'undefined') {
+//       return navigator.msSaveBlob(file, fileFullName);
+//   }
+//   var hyperlink = document.createElement('a');
+//   hyperlink.href = URL.createObjectURL(file);
+//   hyperlink.download = fileFullName;
+//   hyperlink.style = 'display:none;opacity:0;color:transparent;';
+//   (document.body || document.documentElement).appendChild(hyperlink);
+//   if (typeof hyperlink.click === 'function') {
+//       hyperlink.click();
+//   } else {
+//       hyperlink.target = '_blank';
+//       hyperlink.dispatchEvent(new MouseEvent('click', {
+//           view: window,
+//           bubbles: true,
+//           cancelable: true
+//       }));
+//   }
+//   URL.revokeObjectURL(hyperlink.href);
+// }
 
 export default RecordView;
