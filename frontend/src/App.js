@@ -14,7 +14,7 @@ class App extends Component {
 
   state = {
     loading: false,
-    loggedIn: true,
+    loggedIn: false,
     showLogIn: true,
   }
 
