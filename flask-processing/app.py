@@ -124,8 +124,7 @@ def process(data):
   print (json1)
 
 
-  data = {"no_of_pauses":blocksNo, #number of pauses/blocks, numeric
-        "clarity_score":clarityScore, #numeric
+  data = {"clarity_score":clarityScore, #numeric
         "sentiment_score":sentimentScore, #numeric (can be -ve)
         "improvement_on_sentiment":improvementOnSentiment, #boolean
         "average_speed":averageSpeed, #numeric
