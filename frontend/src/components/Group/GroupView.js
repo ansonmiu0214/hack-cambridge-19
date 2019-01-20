@@ -41,14 +41,13 @@ class GroupView extends Component {
     }
 
     const socket = io(WS_URL, { autoConnect: true })
-
+    this.initSockets()
 
     socket.on('child_added', data => this.readMessage(this, data))
     socket.on('ack', ({ id } )=> {
       this.setState({ socket: socket, id: id })
     })
     
-    this.initSockets()
   }
 
   initSockets() {
@@ -56,6 +55,7 @@ class GroupView extends Component {
 
     pc.onicecandidate = (event => event.candidate ? this.sendMessage(null, ({ 'ice': event.candidate })) : console.log("Sent All Ice"));
     pc.onaddstream = (event => {
+      console.log(event)
       alert('adding friend stream!')
       friendsVideo.srcObject = event.stream
     });
