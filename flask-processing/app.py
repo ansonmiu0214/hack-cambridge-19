@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 import re
 import sys
 import datetime, time
+import nltk
+from nltk.corpus import stopwords
 from collections import Counter
 from math import log10, floor
 
@@ -49,8 +51,8 @@ def process(data):
       for l in range(0,blocksNo):
           clarityScore = clarityScore + (block[l]['confidence'] * len(onlyLettersRegex.sub('', block[l]['text']).split()))
 
-      clarityScore = clarityScore/len(transcript.split()) * 100
-      print ("Clarity Score: ", round_to_3sf(clarityScore))
+      clarityScore = round_to_3sf(clarityScore/len(transcript.split()) * 100)
+      print ("Clarity Score: ", clarityScore)
 
 
   #3. Sentiment analysis
@@ -113,7 +115,24 @@ def process(data):
   if (timeDelay > (1.3*(blocksNo-1))):
       longDelay = True
 
-     
+   #7. Other interviewee also used the word ...
+  json1 = open("train_data/56742031a6.json", "r").read()
+  json2 = open("train_data/36174b019c.json", "r").read()
+  json3 = open("train_data/be9cea6eed.json", "r").read()
+
+  #json1_transcript = json1['']
+  print (json1)
+
+
+  data = {"clarity_score":clarityScore, #numeric
+        "sentiment_score":sentimentScore, #numeric (can be -ve)
+        "improvement_on_sentiment":improvementOnSentiment, #boolean
+        "average_speed":averageSpeed, #numeric
+        "speak_too_slow":speakTooSlow, #boolean
+        "speak_too_fast":speakTooFast, #boolean
+        "time_delay": timeDelay, #numeric
+        "long_delay":longDelay} #boolean
+
   return data
 
 
