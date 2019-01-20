@@ -28,6 +28,7 @@ const getAccessToken = async () => {
       data: accessToken
     }
   } catch (exception) {
+    console.error(exception)
     return {
       error: true,
       data: exception
@@ -40,6 +41,7 @@ const postVideo = async (videoName, videoFile) => {
   const { error, data } = payload
   if (error) return payload
 
+  console.log('Retrieved access token.')
   const endpoint = `https://api.videoindexer.ai/${LOCATION}/Accounts/${ACCOUNT_ID}/Videos?accessToken=${data}&name=${DEFAULT_NAME}`
 
   const options = {

@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Divider } from '@material-ui/core';
 
 const styles = theme => ({
   main: {
@@ -80,6 +81,15 @@ function SignIn(props) {
             onClick={signInHandler}
           >
             Sign in
+          </Button>
+          <Divider />
+          <Button
+            fullWidth
+            variant="contained"
+            color="default"
+            className={classes.submit}
+          >
+            Create Account
           </Button>
         </form>
       </Paper>

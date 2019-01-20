@@ -9,13 +9,13 @@ class RecordView extends Component {
 
   componentDidMount() {
     const video = document.getElementById('video')
-    console.log(video)
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
           try {
             video.srcObject = stream
           } catch (error) {
+            console.error(error)
             video.src = window.URL.createObjectURL(stream)
           }
           video.play()
