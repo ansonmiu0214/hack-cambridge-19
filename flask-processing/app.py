@@ -2,8 +2,10 @@ from flask import Flask, render_template, request, jsonify
 import json
 import re
 import sys
+import pandas as pd
 import datetime, time
 import nltk
+from sklearn.linear_model import LinearRegression
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from collections import Counter
@@ -157,9 +159,56 @@ def process(data):
   print (thirdWord)
 
 
+  # LinearRegression
+  df = pd.read_csv("train_data/dataset.csv", header=-1)
+  lr = LinearRegression().fit(df[[1,2,3]],df[0])
+  speed_pred = lr.predict([[clarityScore,sentimentScore,timeDelay]])
+  print(lr.coef_)
+  print ("Average Speed Prediction: ", speed_pred)
+  speed_sqe = (speed_pred - averageSpeed)**2
+
+  lr = LinearRegression().fit(df[[0,2,3]],df[1])
+  clarity_pred = lr.predict([[averageSpeed,sentimentScore,timeDelay]])
+  print(lr.coef_)
+  print ("Clarity Score Prediction", clarity_pred)
+  clarity_sqe = (clarity_pred - clarityScore)**2
+
+  lr = LinearRegression().fit(df[[0,1,3]],df[2])
+  sentiment_pred = lr.predict([[averageSpeed,clarityScore,timeDelay]])
+  print(lr.coef_)
+  print ("Sentiment Score Prediction", sentiment_pred)
+  sentiment_sqe = (sentiment_pred - sentimentScore)**2
+
+  lr = LinearRegression().fit(df[[0,1,2]],df[3])
+  delay_pred = lr.predict([[averageSpeed,sentimentScore,clarityScore]])
+  print(lr.coef_)
+  print ("Delay Score Prediction", delay_pred)
+  delay_sqe = (delay_pred - timeDelay)**2
+
+
+  print ("Sum of squared errors:")
+  print ("Average Speed:", speed_sqe)
+  print ("Clarity Score:", clarity_sqe)
+  print ("Sentiment Score:", sentiment_sqe)
+  print ("Delay Score:", delay_sqe)
+  clarityDecision = False
+  sentimentDecision = False
+  delayTimeDecision = False
+
+  if (clarityScore < clarity_pred):
+      clarityDecision = True
+
+  if sentimentScore < sentiment_pred:
+      sentimentDecision = True
+
+  if timeDelay > delay_pred:
+      delayTimeDecision = True
+
+
+
   data = {"clarity_score":clarityScore, #numeric
         "sentiment_score":sentimentScore, #numeric (can be -ve)
-        "improvement_on_sentiment":improvementOnSentiment, #boolean
+        "improvement_on_sentiment":improvementOnSentiment, #boolean#
         "average_speed":averageSpeed, #numeric
         "speak_too_slow":speakTooSlow, #boolean
         "speak_too_fast":speakTooFast, #boolean
@@ -167,7 +216,13 @@ def process(data):
         "long_delay":longDelay, #boolean
         "first_word":firstWord, #string - word that matches most with others
         "second_word":secondWord, #string - word that matches 2nd most with others
-        "third_word": thirdWord} #string - word that matches 3rd most with others
+        "third_word": thirdWord, #tring - word that matches 3rd most with others
+        #if True then "You should focus more on your speaking clarity.", else "Your clarity is good."
+        "clarity_decision": clarityDecision,
+        #if True then "You should show more enthusiasm.", else "Good interaction!"
+        "sentiment_decision": sentimentDecision,
+        #if True then "You should try to speak more.", else "Good time usage."
+        "delay_time_decision": delayTimeDecision} #
 
 
   return data
