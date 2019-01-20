@@ -26,7 +26,7 @@ class RecordView extends Component {
 
           setTimeout(()=> recorder.stopRecording(function() {
             invokeSaveAsDialog(recorder.getBlob());
-          }),200000);
+          }),2000);
           
         }catch (error) {
           video.src = window.URL.createObjectURL(stream)
@@ -113,7 +113,7 @@ function invokeSaveAsDialog(file, fileName) {
           file.type = 'video/webm';
       } catch (e) {}
   }
-  var fileExtension = (file.type || 'video/webm').split('/')[1];
+  var fileExtension = (file.type || 'video/mp4').split('/')[1];
   if (fileName && fileName.indexOf('.') !== -1) {
       var splitted = fileName.split('.');
       fileName = splitted[0];
