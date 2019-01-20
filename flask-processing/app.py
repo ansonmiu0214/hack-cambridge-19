@@ -208,7 +208,8 @@ def process(data):
 
   data = {"clarity_score":clarityScore, #numeric
         "sentiment_score":sentimentScore, #numeric (can be -ve)
-        "improvement_on_sentiment":improvementOnSentiment, #boolean#
+        "improvement_on_sentiment":improvementOnSentiment, #boolean#,
+        "transcript": transcript,
         "average_speed":averageSpeed, #numeric
         "speak_too_slow":speakTooSlow, #boolean
         "speak_too_fast":speakTooFast, #boolean
